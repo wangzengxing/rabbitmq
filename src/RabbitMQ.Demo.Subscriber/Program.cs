@@ -12,10 +12,11 @@ namespace RabbitMQ.Demo.Subscriber
             Console.WriteLine("Start");
             IConnectionFactory connFactory = new ConnectionFactory//创建连接工厂对象
             {
-                HostName = "localhost",//IP地址
+                HostName = "47.115.112.245",//IP地址
                 Port = 5672,//端口号
-                UserName = "admin",//用户账号
-                Password = "admin"//用户密码
+                UserName = "dgrlm",//用户账号
+                Password = "qazwsx123",//用户密码
+                VirtualHost= "dgrlm-dev"
             };
             using (IConnection conn = connFactory.CreateConnection())
             {
@@ -34,6 +35,8 @@ namespace RabbitMQ.Demo.Subscriber
                       autoDelete: false,
                       arguments: null
                        );
+                    channel.QueueBind(queueName, "exchange-dgrlm-dev", "WorkerAlliance.Topic.Info");
+
                     //创建消费者对象
                     var consumer = new EventingBasicConsumer(channel);
                     consumer.Received += (model, ea) =>
